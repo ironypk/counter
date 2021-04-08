@@ -1,0 +1,22 @@
+.button {
+    background-color:aquamarine ;
+    padding:10px 20px;
+    color:#000;
+    border:0px;
+    font-weight: bold;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button:disabled {
+    background-color: #999;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.button:nth-child(1) {
+    margin-right: 10px;
+}

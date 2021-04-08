@@ -1,0 +1,37 @@
+.root {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items:flex-end;
+}
+.root:nth-child(1){
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 15px;
+}
+
+.input {
+    border:none;
+    outline: 2px solid aquamarine;
+}
+
+.input:focus{
+    outline: 3px solid aquamarine;
+}
+
+
+.error {
+    outline: 3px solid red;
+    background-color:indianred;
+}
+
+.error:focus {
+    outline: 3px solid red;
+}
+
+.error_message {
+    font-size: 10px;
+    color:red
+}
