@@ -1,6 +1,6 @@
 {
   "name": "counter",
-  "homepage": "https://ironypk.github.io/counter/index",
+  "homepage": "https://ironypk.github.io/counter",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
