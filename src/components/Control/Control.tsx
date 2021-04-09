@@ -26,12 +26,12 @@ export const Control: React.FC<ControlPropsType> =
             {
                 type === 'get' ?
                     <React.Fragment>
-                        <Button callback={inc}
+                        <Button onClick={inc}
                                 disabled={count && maxValue && count >= maxValue || edit || error}>inc</Button>
-                        <Button callback={reset} disabled={count === minValue || edit || error}>reset</Button>
+                        <Button onClick={reset} disabled={count === minValue || edit || error}>reset</Button>
                     </React.Fragment>
                     :
-                    <Button callback={set} disabled={error || !edit}>set</Button>
+                    <Button onClick={set} disabled={error || !edit}>set</Button>
             }
         </div>
     )
