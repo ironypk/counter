@@ -17,15 +17,10 @@ function getLocalStorage(key: string) {
     }
 }
 
-export type SettingsPropsType = {
-    maxValue: number
-    minValue: number
-}
-
 function App() {
-    const [count, setCount] = useState(0)
     const [maxValue, setMaxValue] = useState(5)
     const [minValue, setMinValue] = useState(0)
+    const [count, setCount] = useState(0)
 
     const [edit, setEdit] = useState(false)
     const [maxValueErrorMessage, setMaxValueErrorMessage] = useState('')
@@ -94,8 +89,11 @@ function App() {
 
     useEffect(() => {
         const value = getLocalStorage(COUNT)
-        value && setMaxValue(value.maxValue)
-        value && setMinValue(value.minValue)
+        if(value){
+            setMaxValue(value.maxValue)
+            setMinValue(value.minValue)
+            setCount(value.minValue)
+        }
     }, [])
 
     return (
