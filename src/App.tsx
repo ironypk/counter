@@ -6,19 +6,25 @@ import {Input} from './components/Input/Input';
 
 const COUNT = 'COUNT'
 
-function setLocalStorage(key: string, value: any) {
-    localStorage.setItem(key, JSON.stringify(value))
+type StateType = {
+    minValue:number
+    maxValue:number
 }
 
-function getLocalStorage(key: string) {
-    const value = localStorage.getItem(key)
-    if (value) {
-        return JSON.parse(value)
+function setLocalStorage<T>(key: string, state: T) {
+    localStorage.setItem(key, JSON.stringify(state))
+}
+
+function getLocalStorage<T>(key: string,defaultState : T) {
+    const state = localStorage.getItem(key)
+    if (state) {
+        defaultState = JSON.parse(state) as T
     }
+    return defaultState
 }
 
 function App() {
-    const [maxValue, setMaxValue] = useState(5)
+    const [maxValue, setMaxValue] = useState(0)
     const [minValue, setMinValue] = useState(0)
     const [count, setCount] = useState(0)
 
@@ -36,7 +42,7 @@ function App() {
     }
 
     function set() {
-        setLocalStorage(COUNT, {maxValue, minValue})
+        setLocalStorage<StateType>(COUNT, {maxValue, minValue})
         setCount(minValue)
         setEdit(false)
     }
@@ -88,7 +94,7 @@ function App() {
     }
 
     useEffect(() => {
-        const value = getLocalStorage(COUNT)
+        const value = getLocalStorage<StateType>(COUNT,{maxValue:5,minValue:0})
         if(value){
             setMaxValue(value.maxValue)
             setMinValue(value.minValue)
