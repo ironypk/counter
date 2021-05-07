@@ -1,106 +1,54 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import './App.css';
 import {Counter} from './components/Counter/Counter';
 import {Control} from './components/Control/Control';
 import {Input} from './components/Input/Input';
-
-const COUNT = 'COUNT'
-
-type StateType = {
-    minValue:number
-    maxValue:number
-}
-
-function setLocalStorage<T>(key: string, state: T) {
-    localStorage.setItem(key, JSON.stringify(state))
-}
-
-function getLocalStorage<T>(key: string,defaultState : T) {
-    const state = localStorage.getItem(key)
-    if (state) {
-        defaultState = JSON.parse(state) as T
-    }
-    return defaultState
-}
+import {useDispatch, useSelector} from 'react-redux';
+import {Dispatch} from 'redux';
+import {
+    CountStateType,
+    incAC,
+    resetAC,
+    setCountAC,
+    setEditAC,
+    setMaxValueAC,
+    setMinValueAC
+} from './redux/countReducer';
+import {AppStateType} from './redux/store';
 
 function App() {
-    const [maxValue, setMaxValue] = useState(0)
-    const [minValue, setMinValue] = useState(0)
-    const [count, setCount] = useState(0)
+    const dispatch = useDispatch<Dispatch<any>>()
+    const {
+        count,
+        maxValue,
+        minValue,
+        edit,
+        maxValueErrorMessage,
+        minValueErrorMessage,
+        error
+    } = useSelector((state: AppStateType): CountStateType => state.count)
 
-    const [edit, setEdit] = useState(false)
-    const [maxValueErrorMessage, setMaxValueErrorMessage] = useState('')
-    const [minValueErrorMessage, setMinValueErrorMessage] = useState('')
-    const [error, setError] = useState(false)
 
     function inc() {
-        count < maxValue && setCount(prev => prev + 1)
+        dispatch(incAC())
     }
 
     function reset() {
-        setCount(minValue)
+        dispatch(resetAC())
     }
 
     function set() {
-        setLocalStorage<StateType>(COUNT, {maxValue, minValue})
-        setCount(minValue)
-        setEdit(false)
+        dispatch(setEditAC(false))
+        dispatch(setCountAC(minValue))
     }
 
     function maxValueChangeHandler(e: ChangeEvent<HTMLInputElement>) {
-        setEdit(true)
-        setMaxValue(+e.currentTarget.value)
-        if (+e.currentTarget.value <= minValue) {
-            setMaxValueErrorMessage('max value must be > min value')
-            setMinValueErrorMessage('min value must be < max value')
-            setError(true)
-        }
-        if (+e.currentTarget.value > minValue) {
-            setMaxValueErrorMessage('')
-            setMinValueErrorMessage('')
-            setError(false)
-        }
-        if (minValue < 0) {
-            setMinValueErrorMessage('min value must be >= 0')
-            setError(true)
-        }
-        if (+e.currentTarget.value <= 0) {
-            setMaxValueErrorMessage('max value must be > 0')
-            setError(true)
-        }
+        dispatch(setMaxValueAC(+e.currentTarget.value))
     }
 
     function minValueChangeHandler(e: ChangeEvent<HTMLInputElement>) {
-        setEdit(true)
-        setMinValue(+e.currentTarget.value)
-        if (+e.currentTarget.value >= maxValue) {
-            setMinValueErrorMessage('min value must be < max value')
-            setMaxValueErrorMessage('max value must be > min value')
-            setError(true)
-        }
-        if (+e.currentTarget.value < maxValue) {
-            setMaxValueErrorMessage('')
-            setMinValueErrorMessage('')
-            setError(false)
-        }
-        if (maxValue <= 0) {
-            setMaxValueErrorMessage('max value must be >= 0')
-            setError(true)
-        }
-        if (+e.currentTarget.value < 0) {
-            setMinValueErrorMessage('min value must be >= 0')
-            setError(true)
-        }
+        dispatch(setMinValueAC(+e.currentTarget.value))
     }
-
-    useEffect(() => {
-        const value = getLocalStorage<StateType>(COUNT,{maxValue:5,minValue:0})
-        if(value){
-            setMaxValue(value.maxValue)
-            setMinValue(value.minValue)
-            setCount(value.minValue)
-        }
-    }, [])
 
     return (
         <div className="root">
